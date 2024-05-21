@@ -2,9 +2,34 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Color x:Key="LightColor">#fff</Color>
-    <SolidColorBrush x:Key="LightColorBrush" Color="{StaticResource LightColor}" />
-
     <Color x:Key="PrimaryDarkColor">#0069c0</Color>
+    <Color x:Key="AcceptColor">#00e676</Color>
+    <Color x:Key="WarningColor">#ffb300</Color>
+    <Color x:Key="DangerColor">#ff1744</Color>
+
+    <SolidColorBrush x:Key="LightColorBrush" Color="{StaticResource LightColor}" />
     <SolidColorBrush x:Key="PrimaryDarkColorBrush" Color="{StaticResource PrimaryDarkColor}" />
+    <SolidColorBrush x:Key="AcceptColorBrush" Color="{StaticResource AcceptColor}" />
+    <SolidColorBrush x:Key="WarningColorBrush" Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="DangerColorBrush" Color="{StaticResource DangerColor}" />
+
+    <Style TargetType="DataGridCell" x:Key="AcceptCell">
+        <Setter Property="Background" Value="{StaticResource AcceptColorBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource LightColorBrush}"/>
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style TargetType="DataGridCell" x:Key="WarningCell">
+        <Setter Property="Background" Value="{StaticResource WarningColorBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource LightColorBrush}"/>
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style TargetType="DataGridCell" x:Key="DangerCell">
+        <Setter Property="Background" Value="{StaticResource DangerColorBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource LightColorBrush}"/>
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
 
 </ResourceDictionary>

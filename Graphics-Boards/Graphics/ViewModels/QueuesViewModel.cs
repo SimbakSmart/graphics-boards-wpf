@@ -4,9 +4,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Models;
 using Infraestructure.Helpers;
 using Infraestructure.Services;
-using LiveCharts;
-using LiveCharts.Wpf;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
 using System.Diagnostics;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using Axis = LiveChartsCore.SkiaSharpView.Axis;
+using LiveChartsCore.Measure;
 
 
 namespace Graphics.ViewModels
@@ -16,23 +20,31 @@ namespace Graphics.ViewModels
         private QueueServices qs = null;
 
 
+
         #region BAR GRAPH RESPONSALES 
         [ObservableProperty]
-        private SeriesCollection _queueCollection;
+        private ColumnSeries<double> _queueColumSeries;
+
         [ObservableProperty]
-        public string[] _queueLabels;
+        private List<Queues> _listQueue= null;
+
         [ObservableProperty]
-        public Func<double, string> _queueFormatter;
+        public ISeries[] _queueSeries;
+
         [ObservableProperty]
-        private List<Queues> _listQueues = null;
+        public Axis[] _queueAxis;
         #endregion
 
+
+        #region  TABLE RANGE DAYS 
+        [ObservableProperty]
+        private List<Queues> _listByRange;
+        #endregion
 
         public QueuesViewModel()
         {
             qs = new QueueServices();
-            //Task.Run(async () => await StartLoadGraphsAsync());
-            StartLoadGraphsAsync().Wait();
+            Task.Run(async () => await StartLoadGraphsAsync());
         }
 
         // METHODS
@@ -41,6 +53,7 @@ namespace Graphics.ViewModels
             try
             {
                 await BarGraphByResponsableAsync();
+                await GetTotalsByRangeAsync();
             }
             catch (Exception ex)
             {
@@ -54,22 +67,44 @@ namespace Graphics.ViewModels
 
         private async Task BarGraphByResponsableAsync(FiltersParams filters = null)
         {
-            ListQueues?.Clear();
+            ListQueue?.Clear();
+            ListQueue = await qs.GetTotalsByResponsableAsync();
 
-            ListQueues = await qs.GetTotalsByResponsableAsync();
-
-            string[] _queuesArray = ListQueues.Select(q => q.Name).ToArray();
-
-            QueueCollection = new SeriesCollection
+            QueueColumSeries= new ColumnSeries<double>()
             {
-                new ColumnSeries
-                {
-                    Values = new ChartValues<int> (  ListQueues.Select(q => q.Total).ToArray())
-                }
+                Name="Reportes En Queue",
+                Values= ListQueue.Select(q=>(double)q.Total).ToList(),
+                Padding=0.5,
+                MaxBarWidth=70.0,
+               // MaxBarWidth=double.PositiveInfinity,
+                Fill = new SolidColorPaint(new SKColor(25, 118, 210, 255)),
             };
 
-            QueueLabels = _queuesArray;
-            QueueFormatter = value => value.ToString("N");
+            Axis _axis = new Axis()
+            {
+                Labels = ListQueue.Select(q => q.Name).ToList(),
+                TextSize = 12,
+                LabelsAlignment = LiveChartsCore.Drawing.Align.Start,
+                IsVisible = true,
+                LabelsRotation = -90,
+                Position = AxisPosition.Start,
+                Padding = new LiveChartsCore.Drawing.Padding(0),
+
+            };
+            QueueSeries = new ISeries[] { QueueColumSeries};
+            QueueAxis  = new Axis[]{ _axis};
+
+        }
+        private async Task GetTotalsByRangeAsync(FiltersParams filters = null)
+        {
+            if (filters != null)
+            {
+                ListByRange = await qs.GetTotalsByRangeDaysAsync(filters);
+            }
+            else
+            {
+                ListByRange = await qs.GetTotalsByRangeDaysAsync();
+            }
 
         }
 

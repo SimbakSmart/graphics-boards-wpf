@@ -7,6 +7,7 @@
              xmlns:mv="clr-namespace:Graphics.ViewModels"
              xmlns:gb="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:ge="clr-namespace:SourceChord.GridExtra;assembly=GridExtra.Wpf"
+             xmlns:gf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -20,12 +21,80 @@
         <!--Transitioner-->
         <md:Transitioner SelectedIndex="0" >
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                
+
                 <ge:ResponsiveGrid>
-                    
+
+                     <!--Filters-->
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" >
+                        <TextBlock Text="Content" />
+                    </Border>
+
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Margin="5">
+                        <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Center">
+
+                            <DatePicker
+                             SelectedDate="{Binding StartDate}"
+                              Width="140"
+                              md:HintAssist.HelperText="{Binding StarDateMessage}"
+                              md:HintAssist.Hint="Fecha Inicio"
+                              Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+
+                            <DatePicker
+                              SelectedDate="{Binding EndDate}"
+                              Margin="5 0 0 0"
+                              Width="140"
+                              md:HintAssist.HelperText="{Binding EndDateMessage}"
+                              md:HintAssist.Hint="Fecha Final"
+                              Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+
+                            <Button  
+                                Height="50" 
+                                Margin="2 0"
+                                IsEnabled="{Binding IsActive}"
+                                Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
+                                Command="{Binding SendFiltersCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="Magnify" Height="25" Width="25" />
+                                    <TextBlock Text="Buscar"  Margin="4"/>
+                                </StackPanel>
+
+                            </Button>
+
+                            <Button  
+                                Height="50" 
+                                Margin="2 0 0 0"
+                                IsEnabled="{Binding IsActive}"
+                                Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
+                                Command="{Binding RefreshCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="Autorenew" Height="25" Width="25" />
+                                    <TextBlock Text="Recargar"  Margin="4"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button  
+                            Margin="2 0 0 0"
+                           Height="50" 
+                           Style="{StaticResource  MaterialDesignFlatDarkBgButton}"
+                            Command="{x:Static md:Transitioner.MoveNextCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="ChartPie" Height="25" Width="25" />
+                                    <TextBlock Text="Graficas"  Margin="4"/>
+                                </StackPanel>
+
+                            </Button>
+
+
+                        </StackPanel>
+                    </Border>
+                    <!--Filters-->
+
+                    <!--Graph Total Por Resonplable-->
                     <Border ge:ResponsiveGrid.XS="12"  
                             ge:ResponsiveGrid.SM="12" 
-                            Height="440" Margin="5 20">
+                            Height="400" Margin="5 20">
                         <md:Card  
                             md:ElevationAssist.Elevation="Dp3">
                             <Grid>
@@ -38,53 +107,66 @@
                                       <TextBlock 
                                        Grid.Row="0"
                                        HorizontalAlignment="Center" 
-                                       Style="{StaticResource TitleCard}"
+                                       Style="{StaticResource TitleGraph}"
                                        Text="TOTAL ACTIVOS POR ÁREAS" />
-
-                                <gb:CartesianChart
+  
+                                  <gf:CartesianChart 
                                     Grid.Row="1"
-                              Series="{Binding QueueCollection}" 
-                              LegendLocation="Left">
-                              <gb:CartesianChart.AxisX>
-                                  <gb:Axis Title="RESPONSABLE" 
-                                           Labels="{Binding QueueLabels}" 
-                                            FontSize="{StaticResource FontSizeLarge}" 
-                                          FontFamily="{StaticResource RobotoRegular}"/>
-                              </gb:CartesianChart.AxisX>
-                              <gb:CartesianChart.AxisY>
-                                  <gb:Axis Title="TOTALES" 
-                                           LabelFormatter="{Binding QueueFormatter}"
-                                            FontSize="{StaticResource FontSizeLarge}" 
-                                     FontFamily="{StaticResource RobotoRegular}" />
-                              </gb:CartesianChart.AxisY>
-                          </gb:CartesianChart>
+                                    Series="{Binding QueueSeries}"
+                                    XAxes="{Binding QueueAxis}"
+                                    />
 
 
                             </Grid>
                         </md:Card>
                     </Border>
+                    <!--Graph Total Por Resonplable-->
+
+                    <!--Total By Range-->
+                    <Border ge:ResponsiveGrid.XS="12"  ge:ResponsiveGrid.SM="6" Height="400" Margin="5" >
+                        <md:Card  
+                            md:ElevationAssist.Elevation="Dp3">
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock 
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Center" 
+                                    Style="{StaticResource TitleGraph}"
+                                    Text="RANGO POR DÍAS" />
+
+                                <DataGrid
+                                    Grid.Row="1"
+                                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                Height="380"
+                              Margin="7"                             
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            HeadersVisibility="All"
+                            ItemsSource="{Binding ListByRange}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Queue" Binding="{Binding Name}" />
+                                        <DataGridTextColumn Header="0-2 Días" Binding="{Binding RangeOne}" CellStyle="{StaticResource AcceptCell}" />
+                                        <DataGridTextColumn Header="3-7 Días" Binding="{Binding RangeTwo}" CellStyle="{StaticResource AcceptCell}" />
+                                        <DataGridTextColumn Header="8-15 Días" Binding="{Binding RangeThree}" CellStyle="{StaticResource WarningCell}" />
+                                        <DataGridTextColumn Header="16-20 Días" Binding="{Binding RangeFour}" CellStyle="{StaticResource WarningCell}" />
+                                        <DataGridTextColumn Header="Mayor a 21 Días" Binding="{Binding RangeFive}" CellStyle="{StaticResource DangerCell}" />
+                                        <DataGridTextColumn Header="Gran Total" Binding="{Binding Total}"  />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </Grid>
+                        </md:Card>
+                    </Border>
+
                 </ge:ResponsiveGrid>
                 
             </ScrollViewer>
         </md:Transitioner>
-
-
-        <!--<gb:CartesianChart
-            Series="{Binding QueueCollection}" 
-            LegendLocation="Left">
-            <gb:CartesianChart.AxisX>
-                <gb:Axis Title="RESPONSABLE" 
-                         Labels="{Binding QueueLabels}" 
-                          FontSize="{StaticResource FontSizeLarge}" 
-                        FontFamily="{StaticResource RobotoRegular}"/>
-            </gb:CartesianChart.AxisX>
-            <gb:CartesianChart.AxisY>
-                <gb:Axis Title="TOTALES" 
-                         LabelFormatter="{Binding QueueFormatter}"
-                          FontSize="{StaticResource FontSizeLarge}" 
-                   FontFamily="{StaticResource RobotoRegular}" />
-            </gb:CartesianChart.AxisY>
-        </gb:CartesianChart>-->
 
 
     </Grid>

@@ -23,10 +23,10 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeExtraLarge}" />
     </Style>
 
-    <!--Title Card -->
-    <Style TargetType="{x:Type TextBlock}" x:Key="TitleCard">
+    <!--Title Graph -->
+    <Style TargetType="{x:Type TextBlock}" x:Key="TitleGraph">
         <Setter Property="FontFamily" Value="{StaticResource LilitaOneRegular}" />
-        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeExtraLarge}" />
     </Style>
 
 
