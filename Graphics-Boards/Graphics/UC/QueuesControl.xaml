@@ -4,9 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphics.UC"
+             xmlns:mv="clr-namespace:Graphics.ViewModels"
+             xmlns:gb="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:ge="clr-namespace:SourceChord.GridExtra;assembly=GridExtra.Wpf"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <mv:QueuesViewModel/>
+    </UserControl.DataContext>
+
     <Grid>
-        <TextBlock Text="Control de Queues" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <!--Transitioner-->
+        <md:Transitioner SelectedIndex="0" >
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                
+                <ge:ResponsiveGrid>
+                    
+                    <Border ge:ResponsiveGrid.XS="12"  
+                            ge:ResponsiveGrid.SM="12" 
+                            Height="440" Margin="5 20">
+                        <md:Card  
+                            md:ElevationAssist.Elevation="Dp3">
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                      <TextBlock 
+                                       Grid.Row="0"
+                                       HorizontalAlignment="Center" 
+                                       Style="{StaticResource TitleCard}"
+                                       Text="TOTAL ACTIVOS POR ÁREAS" />
+
+                                <gb:CartesianChart
+                                    Grid.Row="1"
+                              Series="{Binding QueueCollection}" 
+                              LegendLocation="Left">
+                              <gb:CartesianChart.AxisX>
+                                  <gb:Axis Title="RESPONSABLE" 
+                                           Labels="{Binding QueueLabels}" 
+                                            FontSize="{StaticResource FontSizeLarge}" 
+                                          FontFamily="{StaticResource RobotoRegular}"/>
+                              </gb:CartesianChart.AxisX>
+                              <gb:CartesianChart.AxisY>
+                                  <gb:Axis Title="TOTALES" 
+                                           LabelFormatter="{Binding QueueFormatter}"
+                                            FontSize="{StaticResource FontSizeLarge}" 
+                                     FontFamily="{StaticResource RobotoRegular}" />
+                              </gb:CartesianChart.AxisY>
+                          </gb:CartesianChart>
+
+
+                            </Grid>
+                        </md:Card>
+                    </Border>
+                </ge:ResponsiveGrid>
+                
+            </ScrollViewer>
+        </md:Transitioner>
+
+
+        <!--<gb:CartesianChart
+            Series="{Binding QueueCollection}" 
+            LegendLocation="Left">
+            <gb:CartesianChart.AxisX>
+                <gb:Axis Title="RESPONSABLE" 
+                         Labels="{Binding QueueLabels}" 
+                          FontSize="{StaticResource FontSizeLarge}" 
+                        FontFamily="{StaticResource RobotoRegular}"/>
+            </gb:CartesianChart.AxisX>
+            <gb:CartesianChart.AxisY>
+                <gb:Axis Title="TOTALES" 
+                         LabelFormatter="{Binding QueueFormatter}"
+                          FontSize="{StaticResource FontSizeLarge}" 
+                   FontFamily="{StaticResource RobotoRegular}" />
+            </gb:CartesianChart.AxisY>
+        </gb:CartesianChart>-->
+
+
     </Grid>
 </UserControl>

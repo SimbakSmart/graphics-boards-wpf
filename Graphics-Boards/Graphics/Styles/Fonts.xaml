@@ -23,4 +23,11 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeExtraLarge}" />
     </Style>
 
+    <!--Title Card -->
+    <Style TargetType="{x:Type TextBlock}" x:Key="TitleCard">
+        <Setter Property="FontFamily" Value="{StaticResource LilitaOneRegular}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+    </Style>
+
+
 </ResourceDictionary>
