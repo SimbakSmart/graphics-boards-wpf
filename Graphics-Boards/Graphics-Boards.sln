@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics", "Graphics\Graphics.csproj", "{9BAC0DCC-2071-4DB0-BA09-FFCCB656A344}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{E0FCADCE-1CFF-4577-BBBC-68ED3F28A6EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infraestructure", "Infraestructure\Infraestructure.csproj", "{7C0DA762-1587-4368-B487-FC9F57B38865}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BAC0DCC-2071-4DB0-BA09-FFCCB656A344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BAC0DCC-2071-4DB0-BA09-FFCCB656A344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BAC0DCC-2071-4DB0-BA09-FFCCB656A344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BAC0DCC-2071-4DB0-BA09-FFCCB656A344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0FCADCE-1CFF-4577-BBBC-68ED3F28A6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0FCADCE-1CFF-4577-BBBC-68ED3F28A6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0FCADCE-1CFF-4577-BBBC-68ED3F28A6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0FCADCE-1CFF-4577-BBBC-68ED3F28A6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C0DA762-1587-4368-B487-FC9F57B38865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C0DA762-1587-4368-B487-FC9F57B38865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C0DA762-1587-4368-B487-FC9F57B38865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C0DA762-1587-4368-B487-FC9F57B38865}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
